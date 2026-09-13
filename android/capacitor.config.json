@@ -1,0 +1,18 @@
+{
+  "appId": "com.mohamed.yoursafeplace",
+  "appName": "Your Safe Place",
+  "webDir": "www",
+  "backgroundColor": "#0d0b12",
+  "android": {
+    "backgroundColor": "#0d0b12",
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false
+  },
+  "ios": {
+    "backgroundColor": "#0d0b12",
+    "contentInset": "always"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

@@ -1,0 +1,7 @@
+/* Local copies of Caveat + Kalam so the app works with no internet */
+@font-face{font-family:'Caveat';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/caveat-400.ttf) format('truetype')}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/caveat-500.ttf) format('truetype')}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/caveat-600.ttf) format('truetype')}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/caveat-700.ttf) format('truetype')}
+@font-face{font-family:'Kalam';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/kalam-300.ttf) format('truetype')}
+@font-face{font-family:'Kalam';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/kalam-400.ttf) format('truetype')}

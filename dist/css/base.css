@@ -1,0 +1,144 @@
+﻿/* ============================================================
+   BASE.CSS -- resets, menu screen, slots, character/profile cards,
+   in-game hint + joystick, loading screen
+   ============================================================ */
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:#0d0b12;
+    font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#efe9e2}
+  canvas{display:block}
+
+  /* ============ FRONT-END MENU ============ */
+  #menu{
+    position:fixed;inset:0;z-index:40;overflow:hidden;
+    transition:opacity 1s ease;
+    background:transparent;
+  }
+  #menu.hidden{opacity:0;pointer-events:none}
+
+  /* soft blobs of colour drifting in the void behind the room */
+  .aura{position:absolute;border-radius:50%;filter:blur(75px);opacity:.5;
+    animation:drift 24s ease-in-out infinite alternate;pointer-events:none}
+  .aura.a{width:46vw;height:46vw;left:-10vw;top:-12vw;background:#6d5aa8}
+  .aura.b{width:40vw;height:40vw;right:-8vw;top:4vh;background:#c98a6a;animation-delay:-8s}
+  .aura.c{width:42vw;height:42vw;left:24vw;bottom:-18vw;background:#4a6f8a;animation-delay:-14s}
+  @keyframes drift{from{transform:translate3d(0,0,0) scale(1)}
+                   to{transform:translate3d(3vw,4vh,0) scale(1.12)}}
+
+  .menu-wash{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 120%, rgba(255,196,130,.12), transparent 55%)}
+  .vignette{position:absolute;inset:0;pointer-events:none;
+    box-shadow:inset 0 0 240px 90px rgba(0,0,0,.72)}
+
+  /* drifting dust motes */
+  .mote{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,240,210,.7);
+    animation:rise linear infinite;pointer-events:none}
+  @keyframes rise{from{transform:translateY(20px);opacity:0}
+    10%{opacity:.8}90%{opacity:.6}to{transform:translateY(-95vh);opacity:0}}
+
+  /* title block — no card, just text + button */
+  .titleblock{
+    position:absolute;left:0;right:0;bottom:16%;z-index:3;text-align:center;
+    animation:fadeup 1.4s ease both;
+  }
+  @keyframes fadeup{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .titleblock h1{
+    font-size:clamp(30px,6vw,52px);font-weight:600;letter-spacing:1px;
+    color:#f4efe8;text-shadow:0 2px 30px rgba(0,0,0,.6), 0 0 60px rgba(160,130,200,.3);
+  }
+  .titleblock .sub{
+    margin-top:8px;font-size:clamp(12px,2.4vw,15px);letter-spacing:2px;
+    text-transform:lowercase;color:rgba(240,235,228,.55);
+  }
+  .enter{
+    margin-top:28px;padding:15px 40px;border-radius:999px;cursor:pointer;
+    font-size:15px;font-weight:500;letter-spacing:.6px;color:#1a1622;
+    background:linear-gradient(180deg,#f3e6c9,#e6c99b);
+    border:0;box-shadow:0 10px 40px rgba(230,201,155,.4), 0 0 0 1px rgba(255,255,255,.3) inset;
+    transition:transform .15s ease, box-shadow .3s ease;
+  }
+  .enter:hover{transform:translateY(-2px);box-shadow:0 16px 50px rgba(230,201,155,.55), 0 0 0 1px rgba(255,255,255,.4) inset}
+  .enter:active{transform:translateY(0)}
+
+  /* ---- SLOT SELECT screen ---- */
+  #slots{
+    position:absolute;inset:0;z-index:4;display:none;flex-direction:column;
+    align-items:center;justify-content:center;gap:22px;
+    animation:fadeup .5s ease both;
+  }
+  #slots.show{display:flex}
+  #slots h2{font-size:clamp(20px,4vw,30px);font-weight:600;color:#f4efe8;
+    text-shadow:0 2px 24px rgba(0,0,0,.6)}
+  #slots .row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;padding:0 16px}
+  .slot{
+    width:200px;min-height:150px;border-radius:20px;cursor:pointer;padding:20px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    color:#efe9e2;text-align:left;
+    background:rgba(24,20,32,.55);border:1px solid rgba(255,255,255,.12);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    transition:transform .15s ease, border-color .25s ease, background .25s ease;
+  }
+  .slot:hover{transform:translateY(-4px);border-color:rgba(243,230,201,.6);background:rgba(30,25,40,.65)}
+  .slot .lbl{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:.55}
+  .slot .name{font-size:19px;font-weight:600;margin-top:4px}
+  .slot .meta{font-size:12px;opacity:.6;margin-top:auto}
+  .slot .del{align-self:flex-end;margin-top:8px;font-size:11px;opacity:.5;
+    background:none;border:0;color:#efe9e2;cursor:pointer;text-decoration:underline}
+  .slot .del:hover{opacity:.9}
+  #slots .back{background:none;border:0;color:rgba(240,235,228,.55);cursor:pointer;
+    font-size:13px;letter-spacing:1px;margin-top:6px}
+  #slots .back:hover{color:#f4efe8}
+
+  /* ---- CHARACTER card (top-right) ---- */
+  #charCard{
+    position:fixed;z-index:15;top:16px;right:16px;
+    padding:12px 14px;border-radius:16px;width:170px;
+    background:rgba(20,17,28,.5);border:1px solid rgba(255,255,255,.12);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    box-shadow:0 12px 40px rgba(0,0,0,.45);display:none;
+  }
+  #charCard.show{display:block}
+  #charCard .ttl{font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:rgba(240,235,228,.5);margin-bottom:8px}
+  #charCard .seg{display:flex;gap:6px}
+  #charCard .seg button{
+    flex:1;padding:8px 0;border-radius:10px;cursor:pointer;font-size:12px;
+    color:#efe9e2;background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.14);transition:background .2s,border-color .2s}
+  #charCard .seg button.active{
+    background:rgba(243,230,201,.9);color:#1a1622;border-color:transparent;font-weight:600}
+  #charCard .seg button:hover:not(.active){background:rgba(255,255,255,.16)}
+
+  /* ---- in-game PROFILE (top-left) ---- */
+  #profile{
+    position:fixed;z-index:15;top:16px;left:16px;
+    padding:12px 16px;border-radius:16px;min-width:170px;
+    background:rgba(20,17,28,.5);border:1px solid rgba(255,255,255,.12);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    box-shadow:0 12px 40px rgba(0,0,0,.45);
+  }
+  #profile .pf-name{font-size:15px;font-weight:600;color:#f4efe8}
+  #profile .pf-mood{font-size:12px;color:rgba(240,235,228,.6);margin-top:3px}
+  #profile .pf-menu{
+    margin-top:10px;width:100%;padding:8px;border-radius:10px;cursor:pointer;
+    font-size:12px;color:#efe9e2;background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.14);transition:background .2s}
+  #profile .pf-menu:hover{background:rgba(255,255,255,.18)}
+
+  /* in-game hint + joystick */
+  #hint{position:fixed;z-index:5;top:16px;left:200px;background:rgba(0,0,0,.32);
+    padding:8px 12px;border-radius:10px;font-size:13px;opacity:0;transition:opacity .5s}
+  #hint.show{opacity:.7}
+  @media(max-width:820px){#hint{display:none}}
+  #joy{display:none;position:fixed;z-index:20;left:24px;bottom:24px;width:130px;height:130px;
+    border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.16);touch-action:none}
+  #stick{position:absolute;left:37px;top:37px;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.35)}
+  @media(hover:none) and (pointer:coarse){#joy{display:block}}
+
+  #loading{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+    background:#0d0b12;font-size:14px;opacity:.7;transition:opacity .5s}
+  #loading.hidden{opacity:0;pointer-events:none}
+  #profile{display:none}
+  #profile.show{display:block}
+
